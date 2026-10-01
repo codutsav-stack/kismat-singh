@@ -1,0 +1,60 @@
+@import "tailwindcss" source("../");
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+
+  --color-navy-950: #0a1628;
+  --color-navy-900: #0f2140;
+  --color-navy-800: #1a2f52;
+  --color-navy-700: #2b4168;
+  --color-navy-600: #475a7d;
+  --color-navy-500: #66789a;
+  --color-navy-400: #8e9cb6;
+  --color-navy-300: #bcc6d6;
+  --color-navy-200: #dde3ec;
+  --color-navy-100: #edf1f6;
+  --color-navy-50: #f6f8fb;
+
+  --color-brand-50: #eef9f8;
+  --color-brand-100: #d4f0ee;
+  --color-brand-200: #a9e0dc;
+  --color-brand-300: #72c9c3;
+  --color-brand-400: #3fada8;
+  --color-brand-500: #1f918e;
+  --color-brand-600: #137572;
+  --color-brand-700: #115e5d;
+  --color-brand-800: #124c4b;
+  --color-brand-900: #123f3f;
+
+  --color-sky-soft: #eaf3fd;
+
+  --shadow-card: 0 1px 2px rgb(15 33 64 / 0.04), 0 2px 8px -2px rgb(15 33 64 / 0.06);
+  --shadow-lift: 0 1px 2px rgb(15 33 64 / 0.05), 0 12px 32px -12px rgb(15 33 64 / 0.18);
+
+  --animate-fade-in: fade-in 0.25s ease-out both;
+  --animate-scan: scan 1.6s ease-in-out infinite;
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes scan {
+    0%, 100% { transform: translateX(-100%); }
+    50% { transform: translateX(250%); }
+  }
+}
+
+@layer base {
+  html { @apply bg-navy-50 text-navy-900; }
+  body {
+    @apply m-0 font-sans antialiased;
+    font-feature-settings: "cv11", "ss01";
+  }
+  ::selection { @apply bg-brand-100 text-navy-950; }
+  :focus-visible { @apply outline-2 outline-offset-2 outline-brand-500; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
