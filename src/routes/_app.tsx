@@ -26,16 +26,29 @@ export const Route = createFileRoute('/_app')({
   component: AppLayout,
 })
 
-type NavItem = { label: string; icon: typeof Bell; to?: '/dashboard' | '/medication-check' | '/history'; soon?: boolean }
+type NavItem =
+  | {
+      label: string
+      icon: typeof LayoutDashboard
+      to:
+        | '/dashboard'
+        | '/medication-check'
+        | '/history'
+        | '/patients'
+        | '/alerts'
+        | '/analytics'
+        | '/settings'
+      soon?: boolean
+    }
 
 const NAV: NavItem[] = [
   { label: 'Dashboard', icon: LayoutDashboard, to: '/dashboard' },
-  { label: 'Patients', icon: Users, soon: true },
+  { label: 'Patients', icon: Users, to: '/patients' },
   { label: 'Medication Check', icon: Pill, to: '/medication-check' },
   { label: 'Check History', icon: History, to: '/history' },
-  { label: 'Alerts', icon: ShieldAlert, soon: true },
-  { label: 'Analytics', icon: BarChart3, soon: true },
-  { label: 'Settings', icon: Settings, soon: true },
+  { label: 'Alerts', icon: ShieldAlert, to: '/alerts' },
+  { label: 'Analytics', icon: BarChart3, to: '/analytics' },
+  { label: 'Settings', icon: Settings, to: '/settings' },
 ]
 
 function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {

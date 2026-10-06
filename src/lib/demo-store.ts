@@ -4,11 +4,12 @@
  * replaces with Netlify Database-backed server functions.
  */
 import { useSyncExternalStore } from 'react'
-import { DEMO_CLINICIAN, getPatient, seedChecks } from '@/data/fixtures'
+import { DEMO_CLINICIAN, getPatient, seedChecks, patients } from '@/data/fixtures'
 import { analyseMedication } from './demo-engine'
-import type { AlertStatus, AuditEntry, MedicationCheck, ProposedMedication } from './types'
+import type { AlertStatus, AuditEntry, MedicationCheck, ProposedMedication, Patient } from './types'
 
 interface State {
+  patients: Patient[]
   checks: MedicationCheck[]
   audit: AuditEntry[]
 }
@@ -37,7 +38,7 @@ function buildSeed(): State {
       source: 'demo_engine',
     } satisfies MedicationCheck
   })
-  return { checks, audit: [] }
+  return { patients: [...patients], checks, audit: [] }
 }
 
 let state: State = buildSeed()
@@ -60,6 +61,38 @@ export function useDemoStore<T>(selector: (s: State) => T): T {
     () => selector(state),
     () => selector(serverState),
   )
+}
+
+export function createPatient(
+  patient: Omit<Patient, 'id' | 'isDemo'>,
+): Patient {
+  const newPatient: Patient = {
+    ...patient,
+    id: `patient-${Date.now().toString(36)}`,
+    isDemo: true,
+  }
+
+  set({
+    ...state,
+    patients: [newPatient, ...state.patients],
+  })
+
+  return newPatient
+}
+
+export function deletePatient(patientId: string) {
+  set({
+    ...state,
+    patients: state.patients.filter(
+      (patient) => patient.id !== patientId,
+    ),
+    checks: state.checks.filter(
+      (check) => check.patientId !== patientId,
+    ),
+    audit: state.audit.filter(
+      (entry) => entry.patientId !== patientId,
+    ),
+  })
 }
 
 let seq = 2049
@@ -104,7 +137,7 @@ export function setAlertStatus(checkId: string, alertId: string, status: Exclude
     action: status,
     timestamp,
   }
-  set({ checks, audit: [entry, ...state.audit] })
+  set({ patients: state.patients, checks, audit: [entry, ...state.audit] })
 }
 
 export function saveReport(checkId: string) {
@@ -112,6 +145,7 @@ export function saveReport(checkId: string) {
   if (!check) return
   const timestamp = new Date().toISOString()
   set({
+    patients: state.patients,
     checks: state.checks.map((c) => (c.id === checkId ? { ...c, status: 'reviewed' } : c)),
     audit: [
       {
