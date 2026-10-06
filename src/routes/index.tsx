@@ -1,246 +1,1121 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
 import {
+  Activity,
   ArrowRight,
+  BellRing,
   Brain,
+  CheckCircle2,
+  ChevronDown,
   ClipboardCheck,
-  Copy,
-  FileClock,
   FlaskConical,
-  History,
-  Pill,
   ShieldCheck,
   Sparkles,
   Stethoscope,
   UserRound,
   Users,
+  X,
 } from 'lucide-react'
+import { useEffect, useState } from 'react'
+
 import { Logo } from '@/components/app/logo'
 import { buttonClass } from '@/components/ui/button'
-import { SeverityBadge } from '@/components/app/severity'
 
 export const Route = createFileRoute('/')({
   component: Landing,
 })
 
-const steps = [
-  { icon: UserRound, title: 'Select patient', body: 'Pull up allergies, conditions, organ function and active medications in one view.' },
-  { icon: Pill, title: 'Enter medication', body: 'Medication, dose, route, frequency, duration and indication.' },
-  { icon: FlaskConical, title: 'Run second check', body: 'The proposed order is reviewed against the patient context in seconds.' },
-  { icon: ClipboardCheck, title: 'Review potential concerns', body: 'Prioritised, explainable alerts with the patient factor that triggered each one.' },
-  { icon: Stethoscope, title: 'Clinician decides', body: 'You acknowledge, dismiss or revise. MediSecond never prescribes or blocks.' },
-]
-
-const features = [
-  { icon: Pill, title: 'Medication interaction checks', body: 'Flags potential drug–drug interactions with the active medication list.' },
-  { icon: ShieldCheck, title: 'Allergy alerts', body: 'Surfaces documented allergies and class-level cross-reactivity considerations.' },
-  { icon: FlaskConical, title: 'Dose & context considerations', body: 'Age, weight, kidney and liver function are considered alongside the dose.' },
-  { icon: Copy, title: 'Duplicate therapy detection', body: 'Notices when a similar medicine already appears on the active list.' },
-  { icon: History, title: 'Patient medication history', body: 'Current and previous medications, with start dates and status.' },
-  { icon: Brain, title: 'Explainable alerts', body: 'Every alert says what was detected, why it matters and a suggested next step.' },
-  { icon: FileClock, title: 'Audit history', body: 'Acknowledgements and dismissals are recorded with clinician and timestamp.' },
-  { icon: Users, title: 'Built for clinical teams', body: 'Clinician and admin roles, with anonymised usage insight for administrators.' },
-]
-
 function Landing() {
+  const [mobileOpen, setMobileOpen] = useState(false)
+
   return (
-    <div className="min-h-screen bg-white">
-      <header className="sticky top-0 z-30 border-b border-navy-100 bg-white/85 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
-          <Link to="/" aria-label="MediSecond home">
+    <div className="min-h-screen overflow-x-hidden bg-white text-navy-900">
+
+      {/* ================= NAVBAR ================= */}
+      <header className="sticky top-0 z-50 border-b border-navy-100/80 bg-white/85 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5">
+
+          {/* Logo */}
+          <Link
+            to="/"
+            aria-label="MediSecond home"
+            className="shrink-0"
+          >
             <Logo />
           </Link>
-          <nav className="hidden items-center gap-8 text-sm font-medium text-navy-600 md:flex">
-            <a href="#problem" className="hover:text-navy-900">Why MediSecond</a>
-            <a href="#how" className="hover:text-navy-900">How it works</a>
-            <a href="#features" className="hover:text-navy-900">Features</a>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden items-center gap-8 md:flex">
+            <a
+              href="#product"
+              className="text-sm font-medium text-navy-600 transition hover:text-brand-600"
+            >
+              Product
+            </a>
+
+            <a
+              href="#how"
+              className="text-sm font-medium text-navy-600 transition hover:text-brand-600"
+            >
+              How it works
+            </a>
+
+            <a
+              href="#safety"
+              className="text-sm font-medium text-navy-600 transition hover:text-brand-600"
+            >
+              Safety
+            </a>
+
+            <a
+              href="#features"
+              className="text-sm font-medium text-navy-600 transition hover:text-brand-600"
+            >
+              Features
+            </a>
           </nav>
-          <div className="flex items-center gap-2">
-            <Link to="/login" className={buttonClass('ghost', 'sm', 'hidden sm:inline-flex')}>
+
+          {/* Desktop Actions */}
+          <div className="hidden items-center gap-2 sm:flex">
+            <Link
+              to="/login"
+              className={buttonClass('ghost', 'sm')}
+            >
               Sign In
             </Link>
-            <Link to="/dashboard" className={buttonClass('primary', 'sm')}>
+
+            <Link
+              to="/dashboard"
+              className={buttonClass('primary', 'sm')}
+            >
               Try Demo
+              <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
+
+          {/* Mobile Button */}
+          <button
+            type="button"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="grid h-10 w-10 place-items-center rounded-xl border border-navy-200 text-navy-700 md:hidden"
+            aria-label="Toggle navigation"
+          >
+            {mobileOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <ChevronDown className="h-5 w-5" />
+            )}
+          </button>
         </div>
+
+        {/* Mobile Navigation */}
+        {mobileOpen && (
+          <div className="border-t border-navy-100 bg-white px-5 py-5 md:hidden">
+            <nav className="flex flex-col gap-2">
+
+              <a
+                href="#product"
+                onClick={() => setMobileOpen(false)}
+                className="rounded-xl px-4 py-3 text-sm font-medium text-navy-700 hover:bg-navy-50"
+              >
+                Product
+              </a>
+
+              <a
+                href="#how"
+                onClick={() => setMobileOpen(false)}
+                className="rounded-xl px-4 py-3 text-sm font-medium text-navy-700 hover:bg-navy-50"
+              >
+                How it works
+              </a>
+
+              <a
+                href="#safety"
+                onClick={() => setMobileOpen(false)}
+                className="rounded-xl px-4 py-3 text-sm font-medium text-navy-700 hover:bg-navy-50"
+              >
+                Safety
+              </a>
+
+              <a
+                href="#features"
+                onClick={() => setMobileOpen(false)}
+                className="rounded-xl px-4 py-3 text-sm font-medium text-navy-700 hover:bg-navy-50"
+              >
+                Features
+              </a>
+
+              <div className="mt-3 grid grid-cols-2 gap-2 border-t border-navy-100 pt-4">
+                <Link
+                  to="/login"
+                  className={buttonClass('outline', 'sm')}
+                >
+                  Sign In
+                </Link>
+
+                <Link
+                  to="/dashboard"
+                  className={buttonClass('primary', 'sm')}
+                >
+                  Try Demo
+                </Link>
+              </div>
+            </nav>
+          </div>
+        )}
       </header>
 
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10 bg-[radial-gradient(60rem_30rem_at_85%_-10%,var(--color-brand-100),transparent_60%),radial-gradient(40rem_24rem_at_-10%_20%,var(--color-sky-soft),transparent_60%)]"
-        />
-        <div className="mx-auto grid max-w-6xl items-center gap-14 px-5 pt-16 pb-20 lg:grid-cols-[1.05fr_1fr] lg:pt-24 lg:pb-28">
-          <div className="animate-fade-in">
-            <p className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white/80 px-3 py-1 text-xs font-semibold text-brand-700">
-              <Sparkles className="h-3.5 w-3.5" aria-hidden />
-              Clinical medication decision support
-            </p>
-            <h1 className="mt-6 text-4xl leading-[1.08] font-extrabold tracking-tight text-navy-950 sm:text-5xl lg:text-[3.5rem]">
-              Every medication decision deserves a{' '}
-              <span className="relative whitespace-nowrap text-brand-600">
-                second set of eyes.
-                <svg aria-hidden viewBox="0 0 300 12" className="absolute -bottom-2 left-0 h-3 w-full text-brand-200" preserveAspectRatio="none">
-                  <path d="M2 9c60-6 180-8 296-3" stroke="currentColor" strokeWidth="5" fill="none" strokeLinecap="round" />
-                </svg>
-              </span>
-            </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-navy-600">
-              MediSecond helps clinicians quickly identify potential medication-related risks before finalizing a
-              medication decision.
-            </p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Link to="/dashboard" className={buttonClass('primary', 'xl')}>
-                Try Demo <ArrowRight className="h-5 w-5" aria-hidden />
-              </Link>
-              <Link to="/login" className={buttonClass('outline', 'xl')}>
-                Sign In
-              </Link>
-            </div>
-            <p className="mt-5 text-sm text-navy-500">
-              No setup needed — Demo Mode uses clearly fictional patients.
-            </p>
+      {/* ================= HERO ================= */}
+      <main>
+
+        <section
+          id="product"
+          className="relative overflow-hidden"
+        >
+          {/* Background decoration */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+          >
+            <div className="absolute left-[-10rem] top-20 h-80 w-80 rounded-full bg-brand-100/50 blur-3xl" />
+
+            <div className="absolute right-[-8rem] top-[-5rem] h-96 w-96 rounded-full bg-sky-soft/70 blur-3xl" />
+
+            <div className="absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-50/60 blur-3xl" />
           </div>
 
-          <HeroPreview />
-        </div>
-      </section>
+          <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 pb-20 pt-16 lg:grid-cols-[1.02fr_0.98fr] lg:pb-28 lg:pt-24">
 
-      {/* Problem / Solution */}
-      <section id="problem" className="border-y border-navy-100 bg-navy-50/60">
-        <div className="mx-auto grid max-w-6xl gap-6 px-5 py-20 md:grid-cols-2">
-          <div className="rounded-3xl bg-white p-8 shadow-card ring-1 ring-navy-200/60 sm:p-10">
-            <p className="text-xs font-bold tracking-[0.14em] text-navy-400 uppercase">The problem</p>
-            <h2 className="mt-3 text-2xl font-bold tracking-tight text-navy-900">Less time, more fragmented information</h2>
-            <p className="mt-4 leading-relaxed text-navy-600">
-              Clinicians make medication decisions under time pressure. Important medication-related considerations can be
-              difficult to catch when information is fragmented.
-            </p>
-          </div>
-          <div className="rounded-3xl bg-navy-900 p-8 text-white shadow-lift sm:p-10">
-            <p className="text-xs font-bold tracking-[0.14em] text-brand-300 uppercase">The solution</p>
-            <h2 className="mt-3 text-2xl font-bold tracking-tight">A fast second-check layer</h2>
-            <p className="mt-4 leading-relaxed text-navy-200">
-              MediSecond provides a fast second-check layer that organizes relevant patient and medication information and
-              highlights potential concerns.
-            </p>
-          </div>
-        </div>
-      </section>
+            {/* Hero copy */}
+            <div className="animate-fade-in">
 
-      {/* How it works */}
-      <section id="how" className="mx-auto max-w-6xl px-5 py-20 sm:py-24">
-        <div className="max-w-2xl">
-          <p className="text-xs font-bold tracking-[0.14em] text-brand-600 uppercase">How it works</p>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight text-navy-950 sm:text-4xl">Five steps. The clinician always decides.</h2>
-        </div>
-        <ol className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {steps.map((s, i) => (
-            <li key={s.title} className="relative rounded-2xl border border-navy-200/70 bg-white p-5 shadow-card">
-              <div className="flex items-center justify-between">
-                <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-50 text-brand-600">
-                  <s.icon className="h-5 w-5" aria-hidden />
+              <div className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50/80 px-3.5 py-1.5 text-xs font-semibold text-brand-700">
+                <Sparkles className="h-3.5 w-3.5" />
+                Clinical medication decision support
+              </div>
+
+              <h1 className="mt-6 max-w-3xl text-4xl font-extrabold leading-[1.05] tracking-tight text-navy-950 sm:text-5xl lg:text-[4.2rem]">
+
+                Medication safety,
+
+                <span className="block text-brand-600">
+                  with a second set of eyes.
                 </span>
-                <span className="font-mono text-xs text-navy-300">0{i + 1}</span>
-              </div>
-              <h3 className="mt-4 font-semibold text-navy-900">{s.title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-navy-500">{s.body}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
+              </h1>
 
-      {/* Features */}
-      <section id="features" className="bg-navy-50/60">
-        <div className="mx-auto max-w-6xl px-5 py-20 sm:py-24">
-          <div className="max-w-2xl">
-            <p className="text-xs font-bold tracking-[0.14em] text-brand-600 uppercase">Features</p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight text-navy-950 sm:text-4xl">
-              Clear, prioritised and explainable
-            </h2>
-            <p className="mt-4 text-navy-600">
-              Alerts are advisory. Wording is deliberate: “consider clinician review”, never “do not prescribe”.
+              <p className="mt-6 max-w-xl text-lg leading-8 text-navy-600">
+                MediSecond helps clinicians organize patient context,
+                identify potential medication-related concerns, and
+                review them before making a final decision.
+              </p>
+
+              {/* CTA */}
+              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+
+                <Link
+                  to="/dashboard"
+                  className={buttonClass('primary', 'xl')}
+                >
+                  Try Demo
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
+
+                <a
+                  href="#how"
+                  className={buttonClass('outline', 'xl')}
+                >
+                  See how it works
+                </a>
+              </div>
+
+              {/* Trust points */}
+              <div className="mt-7 flex flex-wrap gap-x-6 gap-y-3 text-sm text-navy-500">
+
+                <span className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-brand-600" />
+                  Explainable alerts
+                </span>
+
+                <span className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-brand-600" />
+                  Clinician controlled
+                </span>
+
+                <span className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-brand-600" />
+                  Fictional demo data
+                </span>
+              </div>
+            </div>
+
+            {/* Product preview */}
+            <HeroProductPreview />
+
+          </div>
+        </section>
+
+        {/* ================= TRUST STRIP ================= */}
+        <section className="border-y border-navy-100 bg-navy-50/60">
+          <div className="mx-auto grid max-w-7xl gap-4 px-5 py-6 sm:grid-cols-2 lg:grid-cols-4">
+
+            <TrustItem
+              icon={<UserRound className="h-5 w-5" />}
+              title="Patient context"
+              text="Relevant information in one view"
+            />
+
+            <TrustItem
+              icon={<ShieldCheck className="h-5 w-5" />}
+              title="Safety signals"
+              text="Prioritised potential concerns"
+            />
+
+            <TrustItem
+              icon={<Brain className="h-5 w-5" />}
+              title="Explainable"
+              text="Understand why an alert appeared"
+            />
+
+            <TrustItem
+              icon={<Stethoscope className="h-5 w-5" />}
+              title="Clinician-led"
+              text="Final decisions remain human"
+            />
+
+          </div>
+        </section>
+
+        {/* Sections next */}
+        <ProblemSection />
+        <HowSection />
+        <SafetySection />
+        <FeaturesSection />
+        <FinalCTA />
+
+      </main>
+
+      {/* ================= FOOTER ================= */}
+      <footer className="border-t border-navy-100 bg-white">
+
+        <div className="mx-auto max-w-7xl px-5 py-12">
+
+          <div className="grid gap-10 md:grid-cols-[1.5fr_1fr_1fr]">
+
+            <div>
+              <Logo />
+
+              <p className="mt-4 max-w-md text-sm leading-6 text-navy-500">
+                MediSecond is a clinical decision-support prototype
+                designed to provide a fast second-check layer for
+                medication safety review.
+              </p>
+            </div>
+
+            <div>
+              <p className="font-semibold text-navy-900">
+                Product
+              </p>
+
+              <div className="mt-4 flex flex-col gap-3 text-sm text-navy-500">
+
+                <a href="#product" className="hover:text-brand-600">
+                  Product
+                </a>
+
+                <a href="#how" className="hover:text-brand-600">
+                  How it works
+                </a>
+
+                <a href="#features" className="hover:text-brand-600">
+                  Features
+                </a>
+
+              </div>
+            </div>
+
+            <div>
+              <p className="font-semibold text-navy-900">
+                Account
+              </p>
+
+              <div className="mt-4 flex flex-col gap-3 text-sm text-navy-500">
+
+                <Link
+                  to="/login"
+                  className="hover:text-brand-600"
+                >
+                  Sign in
+                </Link>
+
+                <Link
+                  to="/dashboard"
+                  className="hover:text-brand-600"
+                >
+                  Try demo
+                </Link>
+
+              </div>
+            </div>
+
+          </div>
+
+          <div className="mt-10 border-t border-navy-100 pt-6">
+
+            <p className="max-w-4xl text-xs leading-5 text-navy-400">
+              MediSecond does not replace professional medical
+              judgment, prescribing authority, institutional
+              protocols, or authoritative drug references.
+              Demo data is fictional.
             </p>
-          </div>
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {features.map((f) => (
-              <div key={f.title} className="rounded-2xl bg-white p-6 ring-1 ring-navy-200/60 transition-shadow hover:shadow-lift">
-                <f.icon className="h-5 w-5 text-brand-600" aria-hidden />
-                <h3 className="mt-4 font-semibold text-navy-900">{f.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-navy-500">{f.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* CTA */}
-      <section className="mx-auto max-w-6xl px-5 py-20 sm:py-24">
-        <div className="relative overflow-hidden rounded-[2rem] bg-navy-900 px-8 py-14 text-center sm:px-16">
-          <div aria-hidden className="absolute inset-0 bg-[radial-gradient(40rem_20rem_at_50%_120%,rgb(63_173_168/0.35),transparent_70%)]" />
-          <h2 className="relative mx-auto max-w-2xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            Give every medication decision a second set of eyes.
-          </h2>
-          <Link to="/dashboard" className={buttonClass('primary', 'xl', 'relative mt-8 bg-brand-500 hover:bg-brand-400')}>
-            Try MediSecond <ArrowRight className="h-5 w-5" aria-hidden />
-          </Link>
-        </div>
-      </section>
+            <p className="mt-3 text-xs text-navy-400">
+              © 2026 MediSecond. Clinical decision support prototype.
+            </p>
 
-      <footer className="border-t border-navy-100">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-8 text-sm text-navy-500 md:flex-row md:items-center md:justify-between">
-          <Logo />
-          <p className="max-w-2xl text-xs leading-relaxed">
-            MediSecond is a clinical decision-support prototype. It does not replace professional medical judgment,
-            prescribing authority, institutional protocols, or authoritative drug references. Demo data is fictional.
-          </p>
+          </div>
+
         </div>
       </footer>
     </div>
   )
 }
 
-function HeroPreview() {
+
+/* ========================================================= */
+/* HERO PRODUCT PREVIEW                                      */
+/* ========================================================= */
+
+function HeroProductPreview() {
+  const [showAlert, setShowAlert] = useState(true)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setShowAlert((current) => !current)
+    }, 4200)
+
+    return () => clearInterval(timer)
+  }, [])
+
   return (
-    <div className="relative mx-auto w-full max-w-md lg:max-w-none" aria-hidden>
-      <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-gradient-to-br from-brand-100/70 to-sky-soft blur-2xl" />
-      <div className="rounded-3xl border border-navy-200/70 bg-white p-5 shadow-lift sm:p-6">
-        <div className="flex items-center justify-between">
+    <div className="relative mx-auto w-full max-w-xl">
+
+      {/* Glow */}
+      <div
+        aria-hidden
+        className="absolute -inset-8 -z-10 rounded-[3rem] bg-gradient-to-br from-brand-100/80 via-sky-soft/60 to-transparent blur-3xl"
+      />
+
+      {/* Floating badge */}
+      <div className="absolute -right-2 -top-5 z-10 hidden animate-bounce rounded-2xl border border-brand-200 bg-white px-4 py-3 shadow-lift sm:block">
+        <div className="flex items-center gap-2">
+          <span className="grid h-8 w-8 place-items-center rounded-full bg-brand-50 text-brand-600">
+            <ShieldCheck className="h-4 w-4" />
+          </span>
+
           <div>
-            <p className="text-xs font-medium text-navy-400">Medication Second-Check Result</p>
-            <p className="mt-0.5 text-lg font-bold text-navy-900">Amoxicillin 500 mg · Oral</p>
-          </div>
-          <SeverityBadge severity="high" />
-        </div>
-        <div className="mt-4 flex items-center gap-3 rounded-xl bg-navy-50 px-3.5 py-2.5 text-sm">
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-navy-900 text-xs font-bold text-white">RS</span>
-          <div className="min-w-0">
-            <p className="font-semibold text-navy-800">Rahul Sharma · 45 y</p>
-            <p className="truncate text-xs text-navy-500">Allergy: Penicillin · Metformin, Amlodipine</p>
+            <p className="text-xs font-semibold text-navy-900">
+              Safety review
+            </p>
+
+            <p className="text-[11px] text-navy-500">
+              Completed
+            </p>
           </div>
         </div>
-        <div className="mt-4 rounded-2xl border border-orange-200 bg-orange-50/60 p-4">
-          <p className="text-xs font-bold tracking-wide text-orange-700 uppercase">Allergy Risk</p>
-          <p className="mt-1 font-semibold text-navy-900">Potential allergy concern</p>
-          <p className="mt-1 text-sm text-navy-600">
-            Amoxicillin is a penicillin-class antibiotic. The patient has a documented penicillin allergy.
-          </p>
-          <p className="mt-3 text-sm font-medium text-brand-700">→ Consider clinician review of the allergy history.</p>
+      </div>
+
+      {/* Main product window */}
+      <div className="overflow-hidden rounded-[2rem] border border-navy-200/70 bg-white shadow-lift">
+
+        {/* Window header */}
+        <div className="flex items-center justify-between border-b border-navy-100 px-5 py-4">
+
+          <div className="flex items-center gap-2">
+            <span className="h-2.5 w-2.5 rounded-full bg-red-300" />
+            <span className="h-2.5 w-2.5 rounded-full bg-yellow-300" />
+            <span className="h-2.5 w-2.5 rounded-full bg-green-300" />
+          </div>
+
+          <div className="flex items-center gap-2 text-xs font-medium text-navy-400">
+            <Activity className="h-3.5 w-3.5" />
+            Medication Check
+          </div>
+
+          <span className="text-xs text-navy-300">
+            Demo
+          </span>
+
         </div>
-        <div className="mt-3 grid grid-cols-3 gap-2 text-center text-[11px] font-medium">
-          {['Interaction', 'Duplicate', 'Dose'].map((l) => (
-            <div key={l} className="rounded-lg border border-navy-100 py-2 text-navy-500">
-              <span className="mr-1 inline-block h-1.5 w-1.5 rounded-full bg-brand-500 align-middle" />
-              {l}: clear
+
+        <div className="p-5 sm:p-6">
+
+          {/* Patient */}
+          <div className="flex items-center justify-between gap-4">
+
+            <div className="flex items-center gap-3">
+
+              <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-navy-900 text-sm font-bold text-white">
+                RS
+              </div>
+
+              <div>
+                <p className="font-semibold text-navy-900">
+                  Rahul Sharma
+                </p>
+
+                <p className="text-xs text-navy-500">
+                  45 years · 72 kg · Demo patient
+                </p>
+              </div>
+
             </div>
-          ))}
-        </div>
-        <div className="mt-4 flex gap-2">
-          <span className="flex-1 rounded-lg bg-brand-600 py-2 text-center text-sm font-semibold text-white">Acknowledge</span>
-          <span className="flex-1 rounded-lg border border-navy-200 py-2 text-center text-sm font-semibold text-navy-700">Review again</span>
+
+            <span className="hidden rounded-full bg-navy-50 px-3 py-1 text-xs font-semibold text-navy-600 sm:inline-flex">
+              Patient context
+            </span>
+
+          </div>
+
+          {/* Medication */}
+          <div className="mt-5 rounded-2xl border border-navy-100 bg-navy-50/70 p-4">
+
+            <div className="flex items-center gap-3">
+
+              <div className="grid h-10 w-10 place-items-center rounded-xl bg-white text-brand-600 shadow-sm">
+                <FlaskConical className="h-5 w-5" />
+              </div>
+
+              <div>
+                <p className="text-xs font-medium text-navy-400">
+                  Proposed medication
+                </p>
+
+                <p className="mt-0.5 font-semibold text-navy-900">
+                  Amoxicillin 500 mg
+                </p>
+
+                <p className="text-xs text-navy-500">
+                  Oral · Three times daily
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* Alert */}
+          <div
+            className={`mt-4 rounded-2xl border p-4 transition-all duration-700 ${
+              showAlert
+                ? 'border-orange-200 bg-orange-50/80'
+                : 'border-brand-200 bg-brand-50/70'
+            }`}
+          >
+
+            <div className="flex items-start gap-3">
+
+              <div
+                className={`mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-xl ${
+                  showAlert
+                    ? 'bg-orange-100 text-orange-700'
+                    : 'bg-brand-100 text-brand-700'
+                }`}
+              >
+                {showAlert ? (
+                  <BellRing className="h-4 w-4" />
+                ) : (
+                  <CheckCircle2 className="h-4 w-4" />
+                )}
+              </div>
+
+              <div className="min-w-0">
+
+                <div className="flex items-center gap-2">
+                  <p
+                    className={`text-xs font-bold uppercase tracking-wide ${
+                      showAlert
+                        ? 'text-orange-700'
+                        : 'text-brand-700'
+                    }`}
+                  >
+                    {showAlert ? 'Potential concern' : 'Review status'}
+                  </p>
+
+                  <span className="rounded-full bg-white/70 px-2 py-0.5 text-[10px] font-semibold text-navy-500">
+                    Demo
+                  </span>
+                </div>
+
+                <p className="mt-1 font-semibold text-navy-900">
+                  {showAlert
+                    ? 'Potential allergy concern'
+                    : 'Clinician review recommended'}
+                </p>
+
+                <p className="mt-1 text-sm leading-5 text-navy-600">
+                  {showAlert
+                    ? 'A documented penicillin allergy was found in the patient context.'
+                    : 'The alert is advisory and the final medication decision remains with the clinician.'}
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* Check grid */}
+          <div className="mt-4 grid grid-cols-3 gap-2">
+
+            <CheckItem label="Interaction" />
+            <CheckItem label="Dose" />
+            <CheckItem label="Duplicate" />
+
+          </div>
+
+          {/* Bottom */}
+          <div className="mt-5 flex items-center justify-between border-t border-navy-100 pt-4">
+
+            <div>
+              <p className="text-xs text-navy-400">
+                Analysis
+              </p>
+
+              <p className="text-sm font-semibold text-brand-700">
+                Requires clinician review
+              </p>
+            </div>
+
+            <span className="rounded-xl bg-navy-900 px-3.5 py-2 text-xs font-semibold text-white">
+              View result
+            </span>
+
+          </div>
+
         </div>
       </div>
     </div>
+  )
+}
+
+
+/* ========================================================= */
+/* TRUST ITEM                                                */
+/* ========================================================= */
+
+function TrustItem({
+  icon,
+  title,
+  text,
+}: {
+  icon: React.ReactNode
+  title: string
+  text: string
+}) {
+  return (
+    <div className="flex items-center gap-3 rounded-2xl border border-navy-100 bg-white px-4 py-4">
+
+      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-600">
+        {icon}
+      </div>
+
+      <div>
+        <p className="text-sm font-semibold text-navy-900">
+          {title}
+        </p>
+
+        <p className="mt-0.5 text-xs text-navy-500">
+          {text}
+        </p>
+      </div>
+
+    </div>
+  )
+}
+
+
+/* ========================================================= */
+/* CHECK ITEM                                                */
+/* ========================================================= */
+
+function CheckItem({ label }: { label: string }) {
+  return (
+    <div className="rounded-xl border border-navy-100 bg-white px-2 py-2.5 text-center">
+      <CheckCircle2 className="mx-auto h-4 w-4 text-brand-500" />
+
+      <p className="mt-1 text-[11px] font-medium text-navy-500">
+        {label}
+      </p>
+
+      <p className="text-[10px] font-semibold text-brand-700">
+        Clear
+      </p>
+    </div>
+  )
+}
+
+
+/* ========================================================= */
+/* PROBLEM SECTION                                           */
+/* ========================================================= */
+
+function ProblemSection() {
+  return (
+    <section className="border-b border-navy-100 bg-white">
+      <div className="mx-auto max-w-7xl px-5 py-20 sm:py-24">
+
+        <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-600">
+              Why MediSecond
+            </p>
+
+            <h2 className="mt-3 text-3xl font-bold tracking-tight text-navy-950 sm:text-4xl">
+              Important context should not get lost in the workflow.
+            </h2>
+
+            <p className="mt-5 max-w-xl leading-7 text-navy-600">
+              Medication decisions can involve allergies, existing
+              medicines, patient conditions and organ function.
+              MediSecond brings those considerations together into
+              one second-check workflow.
+            </p>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+
+            <ProblemCard
+              number="01"
+              icon={<Users className="h-5 w-5" />}
+              title="Fragmented context"
+              text="Relevant patient information can live across multiple records and workflows."
+            />
+
+            <ProblemCard
+              number="02"
+              icon={<BellRing className="h-5 w-5" />}
+              title="Time pressure"
+              text="Clinicians need useful safety signals without adding unnecessary friction."
+            />
+
+            <ProblemCard
+              number="03"
+              icon={<Brain className="h-5 w-5" />}
+              title="Hard-to-explain alerts"
+              text="A useful alert should explain what was detected and why it matters."
+            />
+
+            <ProblemCard
+              number="04"
+              icon={<ShieldCheck className="h-5 w-5" />}
+              title="Human oversight"
+              text="Technology should support clinical judgment, not replace it."
+            />
+
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+
+function ProblemCard({
+  number,
+  icon,
+  title,
+  text,
+}: {
+  number: string
+  icon: React.ReactNode
+  title: string
+  text: string
+}) {
+  return (
+    <div className="group rounded-2xl border border-navy-200/70 bg-navy-50/50 p-5 transition duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-lift">
+
+      <div className="flex items-center justify-between">
+
+        <div className="grid h-10 w-10 place-items-center rounded-xl bg-white text-brand-600 shadow-sm">
+          {icon}
+        </div>
+
+        <span className="font-mono text-xs text-navy-300">
+          {number}
+        </span>
+
+      </div>
+
+      <h3 className="mt-5 font-semibold text-navy-900">
+        {title}
+      </h3>
+
+      <p className="mt-2 text-sm leading-6 text-navy-500">
+        {text}
+      </p>
+
+    </div>
+  )
+}
+
+
+/* ========================================================= */
+/* HOW IT WORKS                                              */
+/* ========================================================= */
+
+function HowSection() {
+  const steps = [
+    {
+      icon: UserRound,
+      title: 'Select patient',
+      text: 'Bring allergies, conditions, organ function and medications into one context.',
+    },
+    {
+      icon: FlaskConical,
+      title: 'Enter medication',
+      text: 'Add medication, dose, route, frequency, duration and indication.',
+    },
+    {
+      icon: Activity,
+      title: 'Run second check',
+      text: 'Review the proposed medication against the available patient context.',
+    },
+    {
+      icon: ClipboardCheck,
+      title: 'Review concerns',
+      text: 'See prioritised alerts with the patient factor behind each concern.',
+    },
+    {
+      icon: Stethoscope,
+      title: 'Clinician decides',
+      text: 'Acknowledge, dismiss, revise or continue based on clinical judgment.',
+    },
+  ]
+
+  return (
+    <section
+      id="how"
+      className="bg-navy-50/50"
+    >
+      <div className="mx-auto max-w-7xl px-5 py-20 sm:py-24">
+
+        <div className="mx-auto max-w-2xl text-center">
+
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-600">
+            How it works
+          </p>
+
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-navy-950 sm:text-4xl">
+            A clear second-check workflow.
+          </h2>
+
+          <p className="mt-4 leading-7 text-navy-600">
+            From patient context to review, every step is designed
+            to keep the clinician in control.
+          </p>
+
+        </div>
+
+        <div className="relative mt-14 grid gap-4 md:grid-cols-5">
+
+          {/* Connecting line */}
+          <div
+            aria-hidden
+            className="absolute left-[10%] right-[10%] top-11 hidden h-px bg-navy-200 md:block"
+          />
+
+          {steps.map((step, index) => {
+            const Icon = step.icon
+
+            return (
+              <div
+                key={step.title}
+                className="group relative rounded-2xl border border-navy-200/70 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lift"
+              >
+
+                <div className="relative z-10 grid h-12 w-12 place-items-center rounded-2xl bg-brand-600 text-white shadow-lg shadow-brand-600/20">
+                  <Icon className="h-5 w-5" />
+                </div>
+
+                <p className="mt-5 text-xs font-bold text-brand-600">
+                  STEP {String(index + 1).padStart(2, '0')}
+                </p>
+
+                <h3 className="mt-2 font-semibold text-navy-900">
+                  {step.title}
+                </h3>
+
+                <p className="mt-2 text-sm leading-6 text-navy-500">
+                  {step.text}
+                </p>
+
+              </div>
+            )
+          })}
+
+        </div>
+      </div>
+    </section>
+  )
+}
+
+
+/* ========================================================= */
+/* SAFETY SECTION                                            */
+/* ========================================================= */
+
+function SafetySection() {
+  return (
+    <section
+      id="safety"
+      className="bg-navy-950 text-white"
+    >
+      <div className="mx-auto grid max-w-7xl gap-12 px-5 py-20 sm:py-24 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+
+        <div>
+
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-300">
+            Safety by design
+          </p>
+
+          <h2 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
+            Technology supports the clinician. It does not replace them.
+          </h2>
+
+          <p className="mt-5 max-w-xl leading-7 text-navy-200">
+            MediSecond is designed as a second-check layer. Alerts
+            are advisory, explainable and intended for clinician
+            review.
+          </p>
+
+          <Link
+            to="/dashboard"
+            className="mt-8 inline-flex items-center gap-2 rounded-xl bg-brand-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-brand-400"
+          >
+            Explore the demo
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+
+          <SafetyCard
+            icon={<ShieldCheck className="h-5 w-5" />}
+            title="Explainable"
+            text="Each alert provides a rationale and the patient factor involved."
+          />
+
+          <SafetyCard
+            icon={<Stethoscope className="h-5 w-5" />}
+            title="Clinician controlled"
+            text="The final decision always remains with the qualified clinician."
+          />
+
+          <SafetyCard
+            icon={<Brain className="h-5 w-5" />}
+            title="Context aware"
+            text="Potential concerns are considered alongside available patient information."
+          />
+
+          <SafetyCard
+            icon={<ClipboardCheck className="h-5 w-5" />}
+            title="Reviewable"
+            text="Actions such as acknowledgement and dismissal can be tracked."
+          />
+
+        </div>
+      </div>
+    </section>
+  )
+}
+
+
+function SafetyCard({
+  icon,
+  title,
+  text,
+}: {
+  icon: React.ReactNode
+  title: string
+  text: string
+}) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur transition duration-300 hover:bg-white/10">
+
+      <div className="grid h-10 w-10 place-items-center rounded-xl bg-brand-500/15 text-brand-300">
+        {icon}
+      </div>
+
+      <h3 className="mt-4 font-semibold">
+        {title}
+      </h3>
+
+      <p className="mt-2 text-sm leading-6 text-navy-300">
+        {text}
+      </p>
+
+    </div>
+  )
+}
+
+
+/* ========================================================= */
+/* FEATURES                                                   */
+/* ========================================================= */
+
+function FeaturesSection() {
+  const features = [
+    {
+      icon: BellRing,
+      title: 'Medication interactions',
+      text: 'Flags potential drug–drug interaction concerns against active medications.',
+    },
+    {
+      icon: ShieldCheck,
+      title: 'Allergy alerts',
+      text: 'Surfaces documented allergies and relevant class-level considerations.',
+    },
+    {
+      icon: FlaskConical,
+      title: 'Dose & context',
+      text: 'Considers available age, weight, kidney and liver context.',
+    },
+    {
+      icon: ClipboardCheck,
+      title: 'Duplicate therapy',
+      text: 'Identifies when a similar medication is already active.',
+    },
+    {
+      icon: Activity,
+      title: 'Medication history',
+      text: 'Keeps current and previous medication information visible.',
+    },
+    {
+      icon: Brain,
+      title: 'Explainable alerts',
+      text: 'Shows what was detected, why it matters and what to review.',
+    },
+    {
+      icon: Users,
+      title: 'Clinical teams',
+      text: 'Designed around clinician workflows and team visibility.',
+    },
+    {
+      icon: CheckCircle2,
+      title: 'Audit history',
+      text: 'Review actions can be recorded with clinician and timestamp.',
+    },
+  ]
+
+  return (
+    <section
+      id="features"
+      className="bg-white"
+    >
+      <div className="mx-auto max-w-7xl px-5 py-20 sm:py-24">
+
+        <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+
+          <div className="max-w-2xl">
+
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-600">
+              Features
+            </p>
+
+            <h2 className="mt-3 text-3xl font-bold tracking-tight text-navy-950 sm:text-4xl">
+              Built around the medication safety workflow.
+            </h2>
+
+          </div>
+
+          <p className="max-w-md text-sm leading-6 text-navy-500">
+            Clear signals, relevant patient context and an
+            explainable review experience.
+          </p>
+
+        </div>
+
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+
+          {features.map((feature) => {
+            const Icon = feature.icon
+
+            return (
+              <div
+                key={feature.title}
+                className="group rounded-2xl border border-navy-200/70 bg-white p-6 transition duration-300 hover:-translate-y-1 hover:border-brand-200 hover:shadow-lift"
+              >
+
+                <div className="grid h-11 w-11 place-items-center rounded-xl bg-brand-50 text-brand-600 transition group-hover:bg-brand-600 group-hover:text-white">
+                  <Icon className="h-5 w-5" />
+                </div>
+
+                <h3 className="mt-5 font-semibold text-navy-900">
+                  {feature.title}
+                </h3>
+
+                <p className="mt-2 text-sm leading-6 text-navy-500">
+                  {feature.text}
+                </p>
+
+              </div>
+            )
+          })}
+
+        </div>
+      </div>
+    </section>
+  )
+}
+
+
+/* ========================================================= */
+/* FINAL CTA                                                  */
+/* ========================================================= */
+
+function FinalCTA() {
+  return (
+    <section className="px-5 py-20 sm:py-24">
+
+      <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] bg-brand-600 px-6 py-16 text-center sm:px-12">
+
+        {/* Animated circles */}
+        <div
+          aria-hidden
+          className="absolute -left-20 -top-20 h-60 w-60 rounded-full bg-white/10 blur-2xl animate-pulse"
+        />
+
+        <div
+          aria-hidden
+          className="absolute -bottom-24 -right-16 h-72 w-72 rounded-full bg-navy-950/20 blur-3xl"
+        />
+
+        <div className="relative">
+
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-100">
+            Start with the demo
+          </p>
+
+          <h2 className="mx-auto mt-4 max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            Give every medication decision a second set of eyes.
+          </h2>
+
+          <p className="mx-auto mt-5 max-w-2xl text-sm leading-6 text-brand-50">
+            Explore the MediSecond workflow using fictional demo
+            patients and medication scenarios.
+          </p>
+
+          <Link
+            to="/dashboard"
+            className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-bold text-brand-700 shadow-lg transition hover:-translate-y-0.5 hover:bg-brand-50"
+          >
+            Try MediSecond
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+
+        </div>
+      </div>
+    </section>
   )
 }
